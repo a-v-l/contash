@@ -14,6 +14,11 @@ DOCUMENTROOT=$HOME/www
 LANG=de
 MYSQL=`which mysql`
 
+# Read userconfig if available
+if [ -r ~/.contash ]; then
+  source ~/.contash
+fi
+
 # Check for arguments
 if [ $# -lt 2 ]
 then
