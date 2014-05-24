@@ -31,9 +31,10 @@ fi
 
 PROJECT="$1"
 TLD="$2"
+DBNAME=$DBPREFIX${PROJECT//-/_}
 
-Q1="CREATE DATABASE IF NOT EXISTS $DBPREFIX$PROJECT;"
-Q2="GRANT ALL ON $DBPREFIX$PROJECT.* TO '$CMSUSER'@'$HOST' IDENTIFIED BY '$CMSPASS';"
+Q1="CREATE DATABASE IF NOT EXISTS $DBNAME;"
+Q2="GRANT ALL ON $DBNAME.* TO '$CMSUSER'@'$HOST' IDENTIFIED BY '$CMSPASS';"
 Q3="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}"
 
@@ -41,10 +42,10 @@ SQL="${Q1}${Q2}${Q3}"
 $MYSQL -u$MYSQLUSER -p$MYSQLPASS -e "$SQL"
 
 # Check whether database was created
-RESULT=$($MYSQL -u$PROJECT -p$PROJECT -e "SHOW DATABASES LIKE '$DBPREFIX$PROJECT';")
+RESULT=$($MYSQL -u$PROJECT -p$PROJECT -e "SHOW DATABASES LIKE '$DBNAME';")
 if [ -n "$RESULT" ]
 then
-  echo "A database has been created with the name set to $DBPREFIX$PROJECT."
+  echo "A database has been created with the name set to $DBNAME."
   echo "User set to $CMSUSER and password set to $CMSPASS."
 else
   echo "Oups – Something went wrong! The database could not be created or the new user has no access."
