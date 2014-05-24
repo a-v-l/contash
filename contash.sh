@@ -42,7 +42,7 @@ SQL="${Q1}${Q2}${Q3}"
 $MYSQL -u$MYSQLUSER -p$MYSQLPASS -e "$SQL"
 
 # Check whether database was created
-RESULT=$($MYSQL -u$PROJECT -p$PROJECT -e "SHOW DATABASES LIKE '$DBNAME';")
+RESULT=$($MYSQL -u$CMSUSER -p$CMSPASS -e "SHOW DATABASES LIKE '$DBNAME';")
 if [ -n "$RESULT" ]
 then
   echo "A database has been created with the name set to $DBNAME."
@@ -61,7 +61,7 @@ mkdir "$DOCUMENTROOT/$SITE"
 
 # Download and extract latest stable Contao
 curl -Lo $DOCUMENTROOT/$SITE/contao.zip https://github.com/contao/core/archive/master.zip
-unzip -q $DOCUMENTROOT/$SITE/contao.zip
+unzip -q $DOCUMENTROOT/$SITE/contao.zip -d $DOCUMENTROOT/$SITE
 rm $DOCUMENTROOT/$SITE/contao.zip
 
 # Read current version from CHANGELOG.md
