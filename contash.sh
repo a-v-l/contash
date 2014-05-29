@@ -60,17 +60,18 @@ echo "Creating $DOCUMENTROOT/$SITE"
 mkdir "$DOCUMENTROOT/$SITE"
 
 # Download and extract latest stable Contao
-curl -Lo $DOCUMENTROOT/$SITE/contao.zip https://github.com/contao/core/archive/master.zip
+curl -Lo $DOCUMENTROOT/$SITE/contao.zip https://download.contao.org/zip
 unzip -q $DOCUMENTROOT/$SITE/contao.zip -d $DOCUMENTROOT/$SITE
 rm $DOCUMENTROOT/$SITE/contao.zip
 
 # Read current version from CHANGELOG.md
-VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$SITE/core-master/system/docs/CHANGELOG.md)
+VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$SITE/*/system/docs/CHANGELOG.md)
 VERS=${VERS:8}
 
 # Move core-master to contao/[current version]
+mv  $DOCUMENTROOT/$SITE/* $DOCUMENTROOT/$SITE/$VERS
 mkdir $DOCUMENTROOT/$SITE/contao
-mv  $DOCUMENTROOT/$SITE/core-master $DOCUMENTROOT/$SITE/contao/$VERS
+mv  $DOCUMENTROOT/$SITE/$VERS $DOCUMENTROOT/$SITE/contao/$VERS
 
 # Create public symlink to contao/[current version]
 ln -s $DOCUMENTROOT/$SITE/contao/$VERS $DOCUMENTROOT/$SITE/public
