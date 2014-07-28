@@ -22,7 +22,7 @@ fi
 # Check for arguments
 if [ $# -lt 2 ]
 then
-  echo "USAGE: $0 project/domainname tld";
+  echo "USAGE: $0 project|domainname tld";
   echo "New MySQL database requires first argument (the name of the project to create a development database for = domain name)."
   echo "New Contao site requires second argument (the top level domain of the domain)."
   echo "Aborting..."
@@ -78,6 +78,15 @@ cp localconfig.php $DOCUMENTROOT/$SITE/contao/$VERS/system/config/
 # Fill in database name and latest version
 sed -i "" "s/%%DBNAME%%/$DBNAME/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
 sed -i "" "s/%%CURVERS%%/$VERS/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
+
+# Create folders named $PROJECT in /files and /templates
+mkdir $DOCUMENTROOT/$SITE/files/$PROJECT
+touch $DOCUMENTROOT/$SITE/files/$PROJECT/style.css
+touch $DOCUMENTROOT/$SITE/files/$PROJECT/main.js
+mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images
+mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images/site
+mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images/theme
+mkdir $DOCUMENTROOT/$SITE/templates/$PROJECT
 
 # Create public symlink to contao/[current version]
 ln -s $DOCUMENTROOT/$SITE/contao/$VERS $DOCUMENTROOT/$SITE/public

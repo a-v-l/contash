@@ -8,7 +8,6 @@ This is a roadmap and a ToDo list for contash. If you want to contibute, post an
       - **check** for `pathconfig.php`!
   - establish a usage like `contash [options] <command> [args]`
   - local archive of previously downloaded versions (path in config file)
-  - create folders named $PROJECT in /files and /templates 
   - initiate git repository in /
 
 2. Options
