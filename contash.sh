@@ -48,7 +48,7 @@ then
   echo "A database has been created with the name set to $DBNAME."
   echo "User set to $CMSUSER and password set to $CMSPASS."
 else
-  echo "Oups – Something went wrong! The database could not be created or the new user has no access."
+  echo "Oops – Something went wrong! The database could not be created or the new user has no access."
   echo "Aborting..."
   exit
 fi
@@ -73,5 +73,17 @@ mv  $DOCUMENTROOT/$SITE/* $DOCUMENTROOT/$SITE/$VERS
 mkdir $DOCUMENTROOT/$SITE/contao
 mv  $DOCUMENTROOT/$SITE/$VERS $DOCUMENTROOT/$SITE/contao/$VERS
 
+# Copy localconfig.php to contao/[current version]/system/config/
+cp localconfig.php $DOCUMENTROOT/$SITE/contao/$VERS/system/config/
+# Fill in database name and latest version
+sed -i "" "s/%%DBNAME%%/$DBNAME/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
+sed -i "" "s/%%CURVERS%%/$VERS/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
+
 # Create public symlink to contao/[current version]
 ln -s $DOCUMENTROOT/$SITE/contao/$VERS $DOCUMENTROOT/$SITE/public
+
+# Open installtool in browser if server is running
+RUNNING=$(ps ax | grep "httpd" | wc -l)
+if [ $RUNNING -gt 1 ]; then
+  open "http://localhost/contao/$SITE/public/contao/install.php"
+fi
