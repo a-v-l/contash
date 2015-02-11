@@ -13,6 +13,7 @@ DBPREFIX=contao_
 DOCUMENTROOT=$HOME/www
 LANG=de
 MYSQL=`which mysql`
+DIR=$(pwd)
 
 # Read userconfig if available
 if [ -r ~/.contash ]; then
@@ -75,7 +76,7 @@ mkdir $DOCUMENTROOT/$SITE/cms
 mv  $DOCUMENTROOT/$SITE/$VERS $SITEROOT
 
 # Copy localconfig.php to contao/[current version]/system/config/
-cp localconfig.php $SITEROOT/system/config/
+cp $DIR/localconfig.php $SITEROOT/system/config/
 # Fill in database name and latest version
 sed -i "" "s/%%DBNAME%%/$DBNAME/" $SITEROOT/system/config/localconfig.php
 sed -i "" "s/%%CURVERS%%/$VERS/" $SITEROOT/system/config/localconfig.php
