@@ -67,29 +67,30 @@ rm $DOCUMENTROOT/$SITE/contao.zip
 # Read current version from CHANGELOG.md
 VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$SITE/*/system/docs/CHANGELOG.md)
 VERS=${VERS:8}
+SITEROOT=$DOCUMENTROOT/$SITE/cms/$VERS
 
 # Move core-master to contao/[current version]
 mv  $DOCUMENTROOT/$SITE/* $DOCUMENTROOT/$SITE/$VERS
-mkdir $DOCUMENTROOT/$SITE/contao
-mv  $DOCUMENTROOT/$SITE/$VERS $DOCUMENTROOT/$SITE/contao/$VERS
+mkdir $DOCUMENTROOT/$SITE/cms
+mv  $DOCUMENTROOT/$SITE/$VERS $SITEROOT
 
 # Copy localconfig.php to contao/[current version]/system/config/
-cp localconfig.php $DOCUMENTROOT/$SITE/contao/$VERS/system/config/
+cp localconfig.php $SITEROOT/system/config/
 # Fill in database name and latest version
-sed -i "" "s/%%DBNAME%%/$DBNAME/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
-sed -i "" "s/%%CURVERS%%/$VERS/" $DOCUMENTROOT/$SITE/contao/$VERS/system/config/localconfig.php
+sed -i "" "s/%%DBNAME%%/$DBNAME/" $SITEROOT/system/config/localconfig.php
+sed -i "" "s/%%CURVERS%%/$VERS/" $SITEROOT/system/config/localconfig.php
 
 # Create folders named $PROJECT in /files and /templates
-mkdir $DOCUMENTROOT/$SITE/files/$PROJECT
-touch $DOCUMENTROOT/$SITE/files/$PROJECT/style.css
-touch $DOCUMENTROOT/$SITE/files/$PROJECT/main.js
-mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images
-mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images/site
-mkdir $DOCUMENTROOT/$SITE/files/$PROJECT/images/theme
-mkdir $DOCUMENTROOT/$SITE/templates/$PROJECT
+mkdir $SITEROOT/files/$PROJECT
+touch $SITEROOT/files/$PROJECT/style.css
+touch $SITEROOT/files/$PROJECT/main.js
+mkdir $SITEROOT/files/$PROJECT/images
+mkdir $SITEROOT/files/$PROJECT/images/site
+mkdir $SITEROOT/files/$PROJECT/images/theme
+mkdir $SITEROOT/templates/$PROJECT
 
 # Create public symlink to contao/[current version]
-ln -s $DOCUMENTROOT/$SITE/contao/$VERS $DOCUMENTROOT/$SITE/public
+ln -s $SITEROOT $DOCUMENTROOT/$SITE/public
 
 # Open installtool in browser if server is running
 RUNNING=$(ps ax | grep "httpd" | wc -l)
