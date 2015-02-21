@@ -23,7 +23,7 @@ fi
 # Check for arguments
 if [ $# -lt 2 ]
 then
-  echo "USAGE: $0 project|domainname tld";
+  echo "USAGE: contash project|domainname tld";
   echo "New MySQL database requires first argument (the name of the project to create a development database for = domain name)."
   echo "New Contao site requires second argument (the top level domain of the domain)."
   echo "Aborting..."
