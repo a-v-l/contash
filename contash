@@ -1,6 +1,6 @@
 #!/bin/bash
 # Create new MySQL database,
-# download & install latest stable Conato to $DOCUMENTROOT/www.$PROJECT.$TLD/contao
+# download & install latest stable Conato to $DOCUMENTROOT/$PROJECT/contao
 # and link "public" to "contao"
 
 # Environment-configurable variables
@@ -21,17 +21,15 @@ if [ -r ~/.contash ]; then
 fi
 
 # Check for arguments
-if [ $# -lt 2 ]
+if [ $# -lt 1 ]
 then
-  echo "USAGE: contash project|domainname tld";
-  echo "New MySQL database requires first argument (the name of the project to create a development database for = domain name)."
-  echo "New Contao site requires second argument (the top level domain of the domain)."
+  echo "USAGE: contash project|domainname";
+  echo "New MySQL database requires at least one argument (the name of the project to create a development database for = domain name)."
   echo "Aborting..."
   exit
 fi
 
 PROJECT="$1"
-TLD="$2"
 DBNAME=$DBPREFIX${PROJECT//-/_}
 
 Q1="CREATE DATABASE IF NOT EXISTS $DBNAME;"
@@ -54,26 +52,24 @@ else
   exit
 fi
 
-SITE="www.$PROJECT.$TLD"
-
 # Create project directory in $DOCUMENTROOT
-echo "Creating $DOCUMENTROOT/$SITE"
-mkdir "$DOCUMENTROOT/$SITE"
+echo "Creating $DOCUMENTROOT/$PROJECT"
+mkdir "$DOCUMENTROOT/$PROJECT"
 
 # Download and extract latest stable Contao
-curl -Lo $DOCUMENTROOT/$SITE/contao.zip https://download.contao.org/zip
-unzip -q $DOCUMENTROOT/$SITE/contao.zip -d $DOCUMENTROOT/$SITE
-rm $DOCUMENTROOT/$SITE/contao.zip
+curl -Lo $DOCUMENTROOT/$PROJECT/contao.zip https://download.contao.org/zip
+unzip -q $DOCUMENTROOT/$PROJECT/contao.zip -d $DOCUMENTROOT/$PROJECT
+rm $DOCUMENTROOT/$PROJECT/contao.zip
 
 # Read current version from CHANGELOG.md
-VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$SITE/*/system/docs/CHANGELOG.md)
+VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$PROJECT/*/system/docs/CHANGELOG.md)
 VERS=${VERS:8}
-SITEROOT=$DOCUMENTROOT/$SITE/cms/$VERS
+SITEROOT=$DOCUMENTROOT/$PROJECT/cms/$VERS
 
 # Move core-master to contao/[current version]
-mv  $DOCUMENTROOT/$SITE/* $DOCUMENTROOT/$SITE/$VERS
-mkdir $DOCUMENTROOT/$SITE/cms
-mv  $DOCUMENTROOT/$SITE/$VERS $SITEROOT
+mv  $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
+mkdir $DOCUMENTROOT/$PROJECT/cms
+mv  $DOCUMENTROOT/$PROJECT/$VERS $SITEROOT
 
 # Copy localconfig.php to contao/[current version]/system/config/
 cp $DIR/localconfig.php $SITEROOT/system/config/
@@ -91,10 +87,10 @@ mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
 
 # Create public symlink to contao/[current version]
-ln -s $SITEROOT $DOCUMENTROOT/$SITE/public
+ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 
 # Open installtool in browser if server is running
 RUNNING=$(ps ax | grep "httpd" | wc -l)
 if [ $RUNNING -gt 1 ]; then
-  open "http://localhost/contao/$SITE/public/contao/install.php"
+  open "http://localhost/contao/$PROJECT/public/contao/install.php"
 fi

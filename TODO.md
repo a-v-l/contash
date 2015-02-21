@@ -12,6 +12,6 @@ This is a roadmap and a ToDo list for contash. If you want to contibute, post an
 
 2. Options
   - create a help message invoked `contash -h` or `contash --help`
-  - option `-v 3.2.10` or `--version=3.3.0` to install a specific version. If omitted install latest stable
+  - option `-v 3.2.10` or `--version=3.3.0` to install a specific version or `lts` to install current long term support version. If omitted install latest stable
   - option `-i` or `--import=[editor|db.sql]` to import a usergroup *editor* or given sql-file 
   - option `-l` or `--alllangs` to keep all language files in system/modules/core/languages. If omitted delete all but de & en
