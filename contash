@@ -4,11 +4,11 @@
 # and link "public" to "contao"
 
 # Environment-configurable variables
-MYSQLUSER=root
-MYSQLPASS=rootPW
-CMSUSER=user
-CMSPASS=userPW
-HOST=localhost
+MYSQLROOTUSER=root
+MYSQLROOTPASS=rootPW
+MYSQLDBUSER=user
+MYSQLDBPASS=userPW
+MYSQLHOST=localhost
 DBPREFIX=contao_
 DOCUMENTROOT=$HOME/www
 LANG=de
@@ -33,19 +33,19 @@ PROJECT="$1"
 DBNAME=$DBPREFIX${PROJECT//-/_}
 
 Q1="CREATE DATABASE IF NOT EXISTS $DBNAME;"
-Q2="GRANT ALL ON $DBNAME.* TO '$CMSUSER'@'$HOST' IDENTIFIED BY '$CMSPASS';"
+Q2="GRANT ALL ON $DBNAME.* TO '$MYSQLDBUSER'@'$MYSQLHOST' IDENTIFIED BY '$MYSQLDBPASS';"
 Q3="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}"
 
 # Execute database creation
-$MYSQL -u$MYSQLUSER -p$MYSQLPASS -e "$SQL"
+$MYSQL -u$MYSQLROOTUSER -p$MYSQLROOTPASS -e "$SQL"
 
 # Check whether database was created
-RESULT=$($MYSQL -u$CMSUSER -p$CMSPASS -e "SHOW DATABASES LIKE '$DBNAME';")
+RESULT=$($MYSQL -u$MYSQLDBUSER -p$MYSQLDBPASS -e "SHOW DATABASES LIKE '$DBNAME';")
 if [ -n "$RESULT" ]
 then
   echo "A database has been created with the name set to $DBNAME."
-  echo "User set to $CMSUSER and password set to $CMSPASS."
+  echo "User set to $MYSQLDBUSER and password set to $MYSQLDBPASS."
 else
   echo "Oops – Something went wrong! The database could not be created or the new user has no access."
   echo "Aborting..."
