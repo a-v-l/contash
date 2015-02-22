@@ -11,6 +11,7 @@ MYSQLDBPASS=userPW
 MYSQLHOST=localhost
 DBPREFIX=contao_
 DOCUMENTROOT=$HOME/www
+LOCALHOST=localhost/%PROJECT%
 LANG=de
 MYSQL=`which mysql`
 DIR=$(pwd)
@@ -91,6 +92,7 @@ ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 
 # Open installtool in browser if server is running
 RUNNING=$(ps ax | grep "httpd" | wc -l)
+LOCALHOST=${LOCALHOST//%PROJECT%/$PROJECT}
 if [ $RUNNING -gt 1 ]; then
-  open "http://localhost/contao/$PROJECT/public/contao/install.php"
+  open "http://$PROJECT/public/contao/install.php"
 fi
