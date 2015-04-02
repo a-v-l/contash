@@ -11,7 +11,7 @@ MYSQLDBPASS=userPW
 MYSQLHOST=localhost
 DBPREFIX=contao_
 DOCUMENTROOT=$HOME/www
-LOCALHOST=localhost/%PROJECT%
+LOCALHOST=localhost/%PROJECT% # %PROJECT% will be replaced with $PROJECT
 CONTASH=`which contash`
 LOCALCONFIG=${CONTASH/%contash}
 LANG=de
@@ -66,12 +66,14 @@ rm $DOCUMENTROOT/$PROJECT/contao.zip
 # Read current version from CHANGELOG.md
 VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$PROJECT/*/system/docs/CHANGELOG.md)
 VERS=${VERS:8}
+# Trim whitespace!
+VERS=${VERS//[[:space:]]/}
 SITEROOT=$DOCUMENTROOT/$PROJECT/cms/$VERS
 
 # Move core-master to contao/[current version]
-mv  $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
+mv $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
 mkdir $DOCUMENTROOT/$PROJECT/cms
-mv  $DOCUMENTROOT/$PROJECT/$VERS $SITEROOT
+mv $DOCUMENTROOT/$PROJECT/$VERS $SITEROOT
 
 # Copy localconfig.php to contao/[current version]/system/config/
 cp $LOCALCONFIG/localconfig.php $SITEROOT/system/config/
@@ -95,5 +97,5 @@ ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 RUNNING=$(ps ax | grep "httpd" | wc -l)
 LOCALHOST=${LOCALHOST//%PROJECT%/$PROJECT}
 if [ $RUNNING -gt 1 ]; then
-  open "http://$PROJECT/public/contao/install.php"
+  open "http://$LOCALHOST/contao/install.php"
 fi
