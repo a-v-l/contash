@@ -32,7 +32,10 @@ then
 fi
 
 PROJECT="$1"
+echo "Project: $PROJECT"
+echo "Docroot: $DOCUMENTROOT"
 DBNAME=$DBPREFIX${PROJECT//-/_}
+echo -e "Database: $DBNAME\n---------"
 
 Q1="CREATE DATABASE IF NOT EXISTS $DBNAME;"
 Q2="GRANT ALL ON $DBNAME.* TO '$MYSQLDBUSER'@'$MYSQLHOST' IDENTIFIED BY '$MYSQLDBPASS';"
@@ -55,7 +58,7 @@ else
 fi
 
 # Create project directory in $DOCUMENTROOT
-echo "Creating $DOCUMENTROOT/$PROJECT"
+echo -e "---------\nCreating $DOCUMENTROOT/$PROJECT\n---------"
 mkdir "$DOCUMENTROOT/$PROJECT"
 
 # Download and extract latest stable Contao
@@ -69,6 +72,8 @@ VERS=${VERS:8}
 # Trim whitespace!
 VERS=${VERS//[[:space:]]/}
 SITEROOT=$DOCUMENTROOT/$PROJECT/cms/$VERS
+echo "Version: $VERS"
+echo -e "Siteroot: $SITEROOT\n---------"
 
 # Move core-master to contao/[current version]
 mv $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
@@ -96,6 +101,7 @@ ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 # Open installtool in browser if server is running
 RUNNING=$(ps ax | grep "httpd" | wc -l)
 LOCALHOST=${LOCALHOST//%PROJECT%/$PROJECT}
+echo "http://$LOCALHOST/contao/install.php"
 if [ $RUNNING -gt 1 ]; then
   open "http://$LOCALHOST/contao/install.php"
 fi
