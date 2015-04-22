@@ -67,7 +67,9 @@ unzip -q $DOCUMENTROOT/$PROJECT/contao.zip -d $DOCUMENTROOT/$PROJECT
 rm $DOCUMENTROOT/$PROJECT/contao.zip
 
 # Read current version from CHANGELOG.md
-VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$PROJECT/*/system/docs/CHANGELOG.md)
+# make sure not to read CHANGELOG.md from an existing installation at public -> cms/VERS
+CHLOG=$(find $DOCUMENTROOT/$PROJECT/*/system/docs/CHANGELOG.md -not -path "$DOCUMENTROOT/$PROJECT/public/*")
+VERS=$(grep -om 1 "Version \([0-9].\)*" $CHLOG)
 VERS=${VERS:8}
 # Trim whitespace!
 VERS=${VERS//[[:space:]]/}
