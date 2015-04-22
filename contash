@@ -78,7 +78,7 @@ echo "Version: $VERS"
 echo -e "Siteroot: $SITEROOT\n---------"
 
 # Move core-master to contao/[current version]
-mv $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
+mv $DOCUMENTROOT/$PROJECT/$(ls | grep "[^cms|public]") $DOCUMENTROOT/$PROJECT/$VERS
 mkdir $DOCUMENTROOT/$PROJECT/cms
 mv $DOCUMENTROOT/$PROJECT/$VERS $SITEROOT
 
