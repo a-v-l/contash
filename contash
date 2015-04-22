@@ -65,11 +65,11 @@ mkdir "$DOCUMENTROOT/$PROJECT"
 curl -Lo $DOCUMENTROOT/$PROJECT/contao.zip https://download.contao.org/zip
 unzip -q $DOCUMENTROOT/$PROJECT/contao.zip -d $DOCUMENTROOT/$PROJECT
 rm $DOCUMENTROOT/$PROJECT/contao.zip
+INSTALLATION=$(ls $DOCUMENTROOT/$PROJECT | grep "[^cms|public]")
+echo -e "Unziped to: $INSTALLATION\n---------"
 
 # Read current version from CHANGELOG.md
-# make sure not to read CHANGELOG.md from an existing installation at public -> cms/VERS
-CHLOG=$(find $DOCUMENTROOT/$PROJECT/*/system/docs/CHANGELOG.md -not -path "$DOCUMENTROOT/$PROJECT/public/*")
-VERS=$(grep -om 1 "Version \([0-9].\)*" $CHLOG)
+VERS=$(grep -om 1 "Version \([0-9].\)*" $DOCUMENTROOT/$PROJECT/$INSTALLATION/system/docs/CHANGELOG.md)
 VERS=${VERS:8}
 # Trim whitespace!
 VERS=${VERS//[[:space:]]/}
@@ -78,9 +78,8 @@ echo "Version: $VERS"
 echo -e "Siteroot: $SITEROOT\n---------"
 
 # Move core-master to contao/[current version]
-mv $DOCUMENTROOT/$PROJECT/* $DOCUMENTROOT/$PROJECT/$VERS
 mkdir $DOCUMENTROOT/$PROJECT/cms
-mv $DOCUMENTROOT/$PROJECT/$VERS $SITEROOT
+mv $DOCUMENTROOT/$PROJECT/$INSTALLATION $SITEROOT
 
 # Copy localconfig.php to contao/[current version]/system/config/
 cp $LOCALCONFIG/localconfig.php $SITEROOT/system/config/
@@ -98,12 +97,13 @@ mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
 
 # Create public symlink to contao/[current version]
+rm $DOCUMENTROOT/$PROJECT/public
 ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 
 # Open installtool in browser if server is running
+echo "open http://$LOCALHOST/contao/install.php"
 RUNNING=$(ps ax | grep "httpd" | wc -l)
 LOCALHOST=${LOCALHOST//%PROJECT%/$PROJECT}
-echo "http://$LOCALHOST/contao/install.php"
 if [ $RUNNING -gt 1 ]; then
   open "http://$LOCALHOST/contao/install.php"
 fi
