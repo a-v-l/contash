@@ -100,10 +100,22 @@ mkdir $SITEROOT/templates/$PROJECT
 rm $DOCUMENTROOT/$PROJECT/public
 ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 
+# Check for previous installations to copy content from
+if (( $(ls -1 $DOCUMENTROOT/$PROJECT/cms/ | wc -l) > 1 )); then
+  LAST=$(ls -1 $DOCUMENTROOT/$PROJECT/cms/ | tail -2 | head -1)
+  read -p "Copy content from previous installation (cms/$LAST)? [y|n]" COPYFILES
+  if [ "$COPYFILES" = "y" ]; then
+    cp -R $DOCUMENTROOT/$PROJECT/cms/$LAST/files/$PROJECT $SITEROOT/files/
+    cp -R $DOCUMENTROOT/$PROJECT/cms/$LAST/templates/$PROJECT $SITEROOT/templates/
+  fi
+fi
+
 # Open installtool in browser if server is running
-echo "open http://$LOCALHOST/contao/install.php"
 RUNNING=$(ps ax | grep "httpd" | wc -l)
 LOCALHOST=${LOCALHOST//%PROJECT%/$PROJECT}
 if [ $RUNNING -gt 1 ]; then
-  open "http://$LOCALHOST/contao/install.php"
+  read -p "open http://$LOCALHOST/contao/install.php [y|n] " OPENSITE
+  if [ "$OPENSITE" = "y" ]; then
+    open "http://$LOCALHOST/contao/install.php"
+  fi
 fi
