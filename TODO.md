@@ -9,6 +9,8 @@ This is a roadmap and a ToDo list for contash. If you want to contibute, post an
   - establish a usage like `contash [options] <command> [args]`
   - local archive of previously downloaded versions (path in config file)
   - initiate git repository in /
+  - ask to copy not only contents of previously installed versions but also extensions (in /system/modules/) and .skip-files (/system/modules/*/.skip)
+  - give feedback on previously installed versions
 
 2. Options
   - create a help message invoked `contash -h` or `contash --help`

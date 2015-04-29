@@ -65,7 +65,7 @@ mkdir "$DOCUMENTROOT/$PROJECT"
 curl -Lo $DOCUMENTROOT/$PROJECT/contao.zip https://download.contao.org/zip
 unzip -q $DOCUMENTROOT/$PROJECT/contao.zip -d $DOCUMENTROOT/$PROJECT
 rm $DOCUMENTROOT/$PROJECT/contao.zip
-INSTALLATION=$(ls $DOCUMENTROOT/$PROJECT | grep "[^cms|public]")
+INSTALLATION=$(ls $DOCUMENTROOT/$PROJECT | grep "contao")
 echo -e "Unziped to: $INSTALLATION\n---------"
 
 # Read current version from CHANGELOG.md
