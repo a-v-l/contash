@@ -96,8 +96,11 @@ mkdir $SITEROOT/files/$PROJECT/images/site
 mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
 
-# Create public symlink to contao/[current version]
-rm $DOCUMENTROOT/$PROJECT/public
+# Delete existing 'public' symlink if exists
+if [ -a $DOCUMENTROOT/$PROJECT/public ]; then
+  rm $DOCUMENTROOT/$PROJECT/public
+fi
+# Create 'public' symlink to contao/[current version]
 ln -s $SITEROOT $DOCUMENTROOT/$PROJECT/public
 
 # Check for previous installations to copy content from
