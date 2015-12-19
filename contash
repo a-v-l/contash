@@ -15,6 +15,7 @@ LOCALHOST=localhost/%PROJECT% # %PROJECT% will be replaced with $PROJECT
 CONTASH=`which contash`
 LOCALCONFIG=${CONTASH/%contash}
 LANG=de
+defaultLANG=(de en)
 MYSQL=`which mysql`
 
 # Read userconfig if available
@@ -95,6 +96,34 @@ mkdir $SITEROOT/files/$PROJECT/images
 mkdir $SITEROOT/files/$PROJECT/images/site
 mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
+
+# Delete unused languages
+read -p "Which language files do you want to keep [${defaultLANG[*]}|all]: " -a keepLANG
+if [ "${keepLANG[*]}" == "" ]; then
+  keepLANG=("${defaultLANG[@]}")
+fi
+if [ "${keepLANG[0]}" != "all" ]; then
+  for i in "${keepLANG[@]}"; do
+   echo "Keeping $i"
+  done
+  del=0
+  keep=0
+  for i in $(ls -d $SITEROOT/system/modules/*/languages/*); do
+    langdir=${i: -2}
+    if [[ " ${keepLANG[@]} " =~ " ${langdir} " ]]; then
+      #echo "Found $langdir: Not deleting $i"
+      keep=$(( $keep + 1 ))
+    else
+      #echo "Deleting $i"
+      rm -R $i
+      del=$(( $del + 1 ))
+    fi
+  done
+  echo "Kept $keep language folders"
+  echo "Deleted $del language folders"
+else
+  echo "Not deleting anything!"
+fi
 
 # Delete existing 'public' symlink if exists
 if [ -a $DOCUMENTROOT/$PROJECT/public ]; then
