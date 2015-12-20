@@ -92,6 +92,7 @@ sed -i "" "s/%%CURVERS%%/$VERS/" $SITEROOT/system/config/localconfig.php
 mkdir $SITEROOT/files/$PROJECT
 touch $SITEROOT/files/$PROJECT/style.css
 touch $SITEROOT/files/$PROJECT/main.js
+mkdir $SITEROOT/files/$PROJECT/downloads
 mkdir $SITEROOT/files/$PROJECT/images
 mkdir $SITEROOT/files/$PROJECT/images/site
 mkdir $SITEROOT/files/$PROJECT/images/theme
