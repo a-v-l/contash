@@ -82,8 +82,9 @@ echo -e "Siteroot: $SITEROOT\n---------"
 mkdir $DOCUMENTROOT/$PROJECT/cms
 mv $DOCUMENTROOT/$PROJECT/$INSTALLATION $SITEROOT
 
-# Copy localconfig.php to contao/[current version]/system/config/
+# Copy localconfig.php and langconfig.php to contao/[current version]/system/config/
 cp $LOCALCONFIG/localconfig.php $SITEROOT/system/config/
+cp $LOCALCONFIG/langconfig.php $SITEROOT/system/config/
 # Fill in database name and latest version
 sed -i "" "s/%%DBNAME%%/$DBNAME/" $SITEROOT/system/config/localconfig.php
 sed -i "" "s/%%CURVERS%%/$VERS/" $SITEROOT/system/config/localconfig.php
