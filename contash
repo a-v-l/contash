@@ -98,6 +98,7 @@ mkdir $SITEROOT/files/$PROJECT/images
 mkdir $SITEROOT/files/$PROJECT/images/site
 mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
+cp $LOCALCONFIG/analytics_google.html5 $SITEROOT/templates/$PROJECT/
 
 # Prepare contao_init.sql to mach project
 NEWDB=$DOCUMENTROOT/$PROJECT/contao_$PROJECT.sql

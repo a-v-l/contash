@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * To use this script, please fill in your Google Analytics ID below
+ */
+$GoogleAnalyticsId = 'UA-XXXXX-X';
+
+
+/**
+ * DO NOT EDIT ANYTHING BELOW THIS LINE UNLESS YOU KNOW WHAT YOU ARE DOING!
+ */
+if ($GoogleAnalyticsId != 'UA-XXXXX-X' && !BE_USER_LOGGED_IN && sha1(session_id() . (!Config::get('disableIpCheck') ? Environment::get('ip') : '') . 'BE_USER_AUTH') != Input::cookie('BE_USER_AUTH')): ?>
+
+<script>
+  var dt="ga-disable-<?= $GoogleAnalyticsId ?>";
+  -1<document.cookie.indexOf(dt+"=true")&&(window[dt]=!0);
+  function gaOptout(){document.cookie=dt+"=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/";window[dt]=!0};
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '<?= $GoogleAnalyticsId ?>', 'auto');
+  <?php if (Config::get('privacyAnonymizeGA')): ?>
+    ga('set', 'anonymizeIp', true);
+  <?php endif; ?>
+  ga('send', 'pageview');
+  document.getElementById("ga-optout").onclick=function(e){e.preventDefault();gaOptout()};
+</script>
+
+<?php endif; ?>
