@@ -87,6 +87,7 @@ cp $LOCALCONFIG/localconfig.php $SITEROOT/system/config/
 # Fill in database name and latest version
 sed -i "" "s/%%DBNAME%%/$DBNAME/" $SITEROOT/system/config/localconfig.php
 sed -i "" "s/%%CURVERS%%/$VERS/" $SITEROOT/system/config/localconfig.php
+sed -i "" "s/%%TITLE%%/$PROJECT/" $SITEROOT/system/config/localconfig.php
 
 # Create folders named $PROJECT in /files and /templates
 mkdir $SITEROOT/files/$PROJECT
@@ -97,6 +98,15 @@ mkdir $SITEROOT/files/$PROJECT/images
 mkdir $SITEROOT/files/$PROJECT/images/site
 mkdir $SITEROOT/files/$PROJECT/images/theme
 mkdir $SITEROOT/templates/$PROJECT
+
+# Prepare contao_init.sql to mach project
+NEWDB=$DOCUMENTROOT/$PROJECT/contao_$PROJECT.sql
+cp $LOCALCONFIG/contao_init.sql $NEWDB
+sed -i "" "s/init/$PROJECT/g" $NEWDB
+
+# Populate database
+$MYSQL -u$MYSQLROOTUSER -p$MYSQLROOTPASS $DBNAME < $NEWDB
+rm $NEWDB
 
 # Delete unused languages
 read -p "Which language files do you want to keep [${defaultLANG[*]}|all]: " -a keepLANG

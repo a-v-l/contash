@@ -1,3 +1,4 @@
 localconfig.php
 error.log
 contash.bbprojectd
+contao_init.sql
